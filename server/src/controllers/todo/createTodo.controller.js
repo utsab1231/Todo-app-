@@ -6,7 +6,7 @@ import { User } from "../../models/User.model.js";
 async function createTodo(req, res) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(400).json(apiError(400, errors.array()));
+    return res.status(400).json(apiError(400, errors.array()[0].message));
   } else {
     // requiring user id for todo creation
     try {

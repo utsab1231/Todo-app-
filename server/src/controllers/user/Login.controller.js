@@ -8,7 +8,7 @@ async function Login(req, res) {
   const result = validationResult(req);
 
   if (!result.isEmpty()) {
-    return res.status(422).json(apiError(422, result.array()));
+    return res.status(401).json(apiError(401, result.array()[0].msg));
   }
   // ................
   else {

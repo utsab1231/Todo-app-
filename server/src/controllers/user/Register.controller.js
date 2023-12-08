@@ -8,7 +8,7 @@ async function Register(req, res) {
   const result = validationResult(req);
 
   if (!result.isEmpty()) {
-    return res.status(422).json(apiError(422, result.array()));
+    return res.status(401).json(apiError(401, result.array()[0].message));
   } else {
     const { password, username, name, email } = req.body;
     const hashPassword = await bcrypt.hash(password, 10);
@@ -18,7 +18,7 @@ async function Register(req, res) {
       $or: [{ username: username }, { email: email }],
     });
     if (userExists)
-      return res.status(409).json(apiError(409, "User already exists"));
+      return res.status(401).json(apiError(401, "User already exists"));
 
     // saving data to database
     try {
@@ -33,8 +33,8 @@ async function Register(req, res) {
 
       const token = jwt.sign({ user_id: user._id }, process.env.TOKEN_SECRET);
 
-      res.status(201).json(
-        apiResponse(201, "User created successfully", {
+      res.status(200).json(
+        apiResponse(200, "User created successfully", {
           userid: user._id,
           token: token,
         })

@@ -5,7 +5,7 @@ import { Todo } from "../../models/todo.model.js";
 async function markTodo(req, res) {
   const result = validationResult(req);
   if (!result.isEmpty()) {
-    return res.status(400).json(apiError(400, result.array()));
+    return res.status(401).json(apiError(401, result.array()[0].message));
   }
   try {
     const todo = await Todo.findOneAndUpdate(
