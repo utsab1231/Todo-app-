@@ -2,30 +2,36 @@ import { useState } from "react";
 import axios from "axios";
 import { LOGIN_URL } from "../services/apiConstant.js";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-const Login = () => {
+const Login = (user, setUser) => {
   const navigate = useNavigate();
-  const [errors, setErrors] = useState(null);
-  const handleFormSubmit = async (e) => {
-    e.preventDefault();
-    setErrors(null);
-
-    axios
-      .post(LOGIN_URL, form)
-      .then((res) => {
-        localStorage.setItem("user", JSON.stringify(res.data.data));
-        navigate("/");
-      })
-      .catch((err) => {
-        setErrors(err.response.data.message);
-        console.log(errors);
-      });
-  };
 
   const [form, setForm] = useState({
     username: "",
     password: "",
   });
+
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+
+    axios
+      .post(LOGIN_URL, form)
+      .then((res) => {
+        toast.success("Login Success");
+        localStorage.setItem("user", JSON.stringify(res.data.data));
+
+        setTimeout(() => {
+          navigate("/");
+        }, 2000);
+        return;
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message);
+      });
+  };
+
   // const [errors, setErrors] = useState(null);
 
   const handleChange = (e) => {
@@ -67,6 +73,7 @@ const Login = () => {
             >
               Login
             </button>
+            <ToastContainer />
           </div>
         </form>
       </div>

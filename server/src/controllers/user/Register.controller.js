@@ -8,7 +8,7 @@ async function Register(req, res) {
   const result = validationResult(req);
 
   if (!result.isEmpty()) {
-    return res.status(401).json(apiError(401, result.array()[0].message));
+    return res.status(401).json(apiError(401, result.array()[0].msg));
   } else {
     const { password, username, name, email } = req.body;
     const hashPassword = await bcrypt.hash(password, 10);
@@ -36,6 +36,7 @@ async function Register(req, res) {
       res.status(200).json(
         apiResponse(200, "User created successfully", {
           userid: user._id,
+          username: user.username,
           token: token,
         })
       );
