@@ -1,13 +1,25 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { logoutAction } from "../store/feature/userSlice.js";
+import { useDispatch, useSelector } from "react-redux";
 
 const Navbar = () => {
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => {
     setIsOpen(!isOpen);
   };
 
+  const handleClick = () => {
+    localStorage.removeItem("user");
+    dispatch(logoutAction());
+    navigate("/login");
+  };
   return (
     <div className="navbar bg-[#3e5c76] shadow-lg ">
       <div className="max-w-7xl mx-auto px-4">
@@ -25,25 +37,38 @@ const Navbar = () => {
           </div>
           <div className="hidden md:flex items-center space-x-10">
             <div className="">
-              <NavLink
-                to="/login"
-                className="text-xl font-semibold  px-2 py-1 rounded-xl mx-1 hover:text-white"
-              >
-                Login
-              </NavLink>
-              <NavLink
-                to="/register"
-                className="text-xl font-semibold  px-2 py-1 rounded-xl mx-2 hover:text-white"
-              >
-                Register
-              </NavLink>
-            </div>
-            <div className="hidden md:flex items-center space-x-10 ">
-              <input
-                className="form-input p-2 rounded-md"
-                type="text"
-                placeholder="Search..."
-              />
+              {user ? (
+                <div className="flex">
+                  <NavLink
+                    className="text-xl font-semibold  px-2 py-1 rounded-xl mx-2 hover:text-white"
+                    onClick={handleClick}
+                  >
+                    Logout
+                  </NavLink>
+                  <div className="hidden md:flex items-center space-x-10 ">
+                    <input
+                      className="form-input p-2 rounded-md"
+                      type="text"
+                      placeholder="Search..."
+                    />
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <NavLink
+                    to="/login"
+                    className="text-xl font-semibold  px-2 py-1 rounded-xl mx-1 hover:text-white"
+                  >
+                    Login
+                  </NavLink>
+                  <NavLink
+                    to="/register"
+                    className="text-xl font-semibold  px-2 py-1 rounded-xl mx-2 hover:text-white"
+                  >
+                    Register
+                  </NavLink>
+                </>
+              )}
             </div>
           </div>
           <div className="md:hidden flex items-center">
@@ -82,19 +107,39 @@ const Navbar = () => {
             >
               About Us
             </NavLink>
-            <NavLink
-              to="/login"
-              className="block pl-4 pr-8 py-2 text-base font-medium text-gray-900 border-r-4 border-transparent hover:text-purple-700 hover:border-purple-500"
-            >
-              Login
-            </NavLink>
 
-            <NavLink
-              to="/login"
-              className="block pl-4 pr-8 py-2 text-base font-medium text-gray-900 border-r-4 border-transparent hover:text-purple-700 hover:border-purple-500"
-            >
-              Register
-            </NavLink>
+            {user ? (
+              <div>
+                <NavLink
+                  className="block pl-4 pr-8 py-2 text-base font-medium text-gray-900 border-r-4 border-transparent hover:text-purple-700 hover:border-purple-500"
+                  onClick={handleClick}
+                >
+                  Logout
+                </NavLink>
+                <div className="flex items-center space-x-10 ">
+                  <input
+                    className="form-input p-2 rounded-md w-full mt-2 text-center"
+                    type="text"
+                    placeholder="Search..."
+                  />
+                </div>
+              </div>
+            ) : (
+              <>
+                <NavLink
+                  to="/login"
+                  className="block pl-4 pr-8 py-2 text-base font-medium text-gray-900 border-r-4 border-transparent hover:text-purple-700 hover:border-purple-500"
+                >
+                  Login
+                </NavLink>
+                <NavLink
+                  to="/register"
+                  className="block pl-4 pr-8 py-2 text-base font-medium text-gray-900 border-r-4 border-transparent hover:text-purple-700 hover:border-purple-500"
+                >
+                  Register
+                </NavLink>
+              </>
+            )}
           </div>
         )}
       </div>

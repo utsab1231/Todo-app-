@@ -3,10 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
-import { REGISTER_URL } from "../services/apiConstant.js";
+import { REGISTER_URL } from "../utils/constants.js";
 
 const Register = () => {
   const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     name: "",
     username: "",
@@ -26,9 +27,9 @@ const Register = () => {
         toast.success(
           `User ${res.data.data.username}  registered Successfully`
         );
-        localStorage.setItem("user", JSON.stringify(res.data.data));
+
         setTimeout(() => {
-          navigate("/");
+          navigate("/login");
         }, 2000);
         return;
       })

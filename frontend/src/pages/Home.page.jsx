@@ -1,6 +1,17 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { loginAction } from "../store/feature/userSlice.js";
 function Home() {
-  return (
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(loginAction(localStorage.getItem("user")));
+  }, [dispatch]);
+  const user = useSelector((state) => state.user);
+
+  return user ? (
+    <button>Welcome. Click Here</button>
+  ) : (
     <div className="w-full h-screen bg-[#051923] text-white overflow-hidden ">
       <section className="flex flex-col items-center pt-24 w-[98%]">
         <h1 className="text-9xl ">

@@ -1,12 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import { LOGIN_URL } from "../services/apiConstant.js";
+import { LOGIN_URL } from "../utils/constants.js";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { loginAction } from "../store/feature/userSlice.js";
+
 import "react-toastify/dist/ReactToastify.css";
 
-const Login = (user, setUser) => {
+const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (localStorage.getItem("user")) {
+      navigate("/");
+    }
+  }, [navigate]);
 
   const [form, setForm] = useState({
     username: "",
@@ -21,6 +30,7 @@ const Login = (user, setUser) => {
       .then((res) => {
         toast.success("Login Success");
         localStorage.setItem("user", JSON.stringify(res.data.data));
+        dispatch(loginAction(localStorage.getItem("user")));
 
         setTimeout(() => {
           navigate("/");
