@@ -14,8 +14,11 @@ export const userSlice = createSlice({
     logoutAction: (state) => {
       state.user = null;
     },
+    refreshAction: (state) => {
+      state.user = localStorage.getItem("user");
+    },
   },
 });
 
-export const { loginAction, logoutAction } = userSlice.actions;
+export const { loginAction, logoutAction ,refreshAction} = userSlice.actions;
 export default userSlice.reducer;

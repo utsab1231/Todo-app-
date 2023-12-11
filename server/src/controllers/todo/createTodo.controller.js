@@ -4,9 +4,9 @@ import { Todo } from "../../models/todo.model.js";
 import { User } from "../../models/User.model.js";
 
 async function createTodo(req, res) {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json(apiError(400, errors.array()[0].message));
+  const result = validationResult(req);
+  if (!result.isEmpty()) {
+    return res.status(400).json(apiError(400, result.array()[0].msg));
   } else {
     // requiring user id for todo creation
     try {
@@ -27,7 +27,9 @@ async function createTodo(req, res) {
         .status(201)
         .json(apiResponse(201, "Todo created succesfully", todo));
     } catch (error) {
-      return res.status(500).json(apiError(500, error.message));
+      return res
+        .status(500)
+        .json(apiError(500, "Something went wrong on server"));
     }
   }
 }

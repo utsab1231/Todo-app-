@@ -24,7 +24,9 @@ const Navbar = () => {
     <div className="navbar bg-[#3e5c76] shadow-lg ">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between items-center py-6">
-          <div className="logo text-3xl font-bold text-white">TO-DO</div>
+          <div className="logo text-3xl font-bold text-white">
+            <NavLink to="/">TO-DO</NavLink>
+          </div>
           <div className="hidden md:flex items-center space-x-10">
             <div className="hover:text-white">
               <NavLink to="/" className="text-xl font-semibold">
@@ -38,20 +40,23 @@ const Navbar = () => {
           <div className="hidden md:flex items-center space-x-10">
             <div className="">
               {user ? (
-                <div className="flex">
+                <div className="flex space-x-24">
+                  <div className="hidden md:flex items-center space-x-2 ">
+                    <input
+                      className="form-input p-2 rounded-md bg-transparent text-white"
+                      type="text"
+                      placeholder="Search Here..."
+                    />
+                    <button className="text-white   px-1 py-1 rounded-xl hover:bg-blue-600 text-md font-semibold">
+                      Search
+                    </button>
+                  </div>
                   <NavLink
                     className="text-xl font-semibold  px-2 py-1 rounded-xl mx-2 hover:text-white"
                     onClick={handleClick}
                   >
                     Logout
                   </NavLink>
-                  <div className="hidden md:flex items-center space-x-10 ">
-                    <input
-                      className="form-input p-2 rounded-md"
-                      type="text"
-                      placeholder="Search..."
-                    />
-                  </div>
                 </div>
               ) : (
                 <>
