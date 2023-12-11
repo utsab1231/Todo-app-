@@ -14,7 +14,7 @@ function TodoMethod() {
     axios.get(GET_TODO_URL, { headers }).then((res) => {
       setuserData(res.data.data);
     });
-  }, [user.token]);
+  }, [user]);
 
   return (
     <>

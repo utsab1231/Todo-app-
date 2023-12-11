@@ -1,13 +1,15 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import TodoMethod from "./TodoMethod.jsx";
 import { ADD_TODO_URL } from "../utils/constants.js";
 import { toast, ToastContainer } from "react-toastify";
+import { loginAction } from "../store/feature/userSlice.js";
 
 import axios from "axios";
 
 function LoginHome() {
   const user = JSON.parse(useSelector((state) => state.user));
+  const dispatch = useDispatch();
   const handleAddTodo = async () => {
     try {
       const headers = { auth: user.token };
@@ -16,7 +18,7 @@ function LoginHome() {
       await axios.post(ADD_TODO_URL, data, { headers });
       setInput("");
       toast.success("Todo added successfully");
-      window.location.reload();
+      dispatch(loginAction(localStorage.getItem("user")));
     } catch (error) {
       toast.error(error.response.data.message);
     }
