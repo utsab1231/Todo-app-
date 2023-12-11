@@ -3,7 +3,11 @@ import PropTypes from "prop-types";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { loginAction } from "../store/feature/userSlice.js";
-import { DELETE_TODO_URL, UPDATE_TODO_URL } from "../utils/constants.js";
+import {
+  DELETE_TODO_URL,
+  UPDATE_TODO_URL,
+  MARK_TODO_URL,
+} from "../utils/constants.js";
 import { ToastContainer, toast } from "react-toastify";
 
 function TodoCard({ todo }) {
@@ -11,6 +15,7 @@ function TodoCard({ todo }) {
   const user = JSON.parse(useSelector((state) => state.user));
   const dispatch = useDispatch();
 
+  const [isCompleted, setIsCompleted] = useState(todo.isCompleted);
   const [isUpdate, setIsUpdate] = useState(false);
   const [updateValue, setUpdateValue] = useState(todo.description);
 
@@ -21,8 +26,9 @@ function TodoCard({ todo }) {
       const data = { todo_id: id };
 
       await axios.post(DELETE_TODO_URL, data, { headers });
-      toast.success("Todo deleted successfully");
+
       dispatch(loginAction(localStorage.getItem("user")));
+      toast.success("Todo deleted successfully");
     } catch (error) {
       toast.error(error.response.data.message);
     }
@@ -41,6 +47,25 @@ function TodoCard({ todo }) {
     }
   };
 
+  const handleChecked = async (id) => {
+    if (todo.isCompleted) {
+      toast.error("Todo already completed");
+      return;
+    }
+
+    try {
+      const headers = { auth: user.token };
+      const data = { todo_id: id };
+
+      await axios.post(MARK_TODO_URL, data, { headers });
+      toast.success("Todo updated successfully updated");
+      setIsCompleted(true);
+      dispatch(loginAction(localStorage.getItem("user")));
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
+
   return (
     <div className="bg-black shadow-md rounded-md p-4 w-[1/3] m-4 h-72">
       {isUpdate ? (
@@ -50,15 +75,23 @@ function TodoCard({ todo }) {
           className="w-full h-24 text-black p-2 rounded-sm"
         />
       ) : (
-        <h2 className="text-lg font-semibold mb-2 h-24">{updateValue}</h2>
+        <h2
+          className={`text-lg font-semibold mb-2 h-24 ${isCompleted ? "line-through" : ""}`}
+        >
+          {updateValue}
+        </h2>
       )}
 
       <label className="flex items-center cursor-pointer">
         <input
           type="checkbox"
           className="form-checkbox rounded text-blue-500 mr-2"
+          checked={isCompleted}
+          onChange={() => handleChecked(todo._id)}
         />
-        <span className="text-gray-700 text-md">Completed</span>
+        <span className="text-gray-700 text-md">
+          {isCompleted ? "Yeah , You did it" : "Hang in there , You can do it"}
+        </span>
       </label>
 
       {/* <!-- Created At Date --> */}
@@ -73,12 +106,17 @@ function TodoCard({ todo }) {
       <div className="flex justify-between items-center">
         {isUpdate ? (
           <>
-            <button
-              className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300"
-              onClick={() => handleUpdateTodo(todo._id)}
-            >
-              Update
-            </button>
+            {isCompleted ? (
+              <></>
+            ) : (
+              <button
+                className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300"
+                onClick={() => handleUpdateTodo(todo._id)}
+              >
+                Update
+              </button>
+            )}
+
             <button
               className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 focus:outline-none focus:ring focus:border-red-300"
               onClick={() => {
@@ -92,12 +130,17 @@ function TodoCard({ todo }) {
           </>
         ) : (
           <>
-            <button
-              className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300"
-              onClick={() => setIsUpdate(!isUpdate)}
-            >
-              Update
-            </button>
+            {isCompleted ? (
+              <></>
+            ) : (
+              <button
+                className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300"
+                onClick={() => setIsUpdate(!isUpdate)}
+              >
+                Update
+              </button>
+            )}
+
             <button
               className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 focus:outline-none focus:ring focus:border-red-300"
               onClick={() => handleDeleteTodo(todo._id)}

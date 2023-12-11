@@ -9,8 +9,23 @@ async function markTodo(req, res) {
   }
   try {
     const todo = await Todo.findOneAndUpdate(
-      { _id: req.body.todo_id, userId: req.userId },
-      [{ $set: { isCompleted: { $eq: [(false, " $isCompleted")] } } }]
+      {
+        _id: req.body.todo_id,
+        userId: req.userId,
+      },
+      [
+        {
+          $set: {
+            isCompleted: {
+              $cond: {
+                if: { $eq: ["$isCompleted", false] },
+                then: true,
+                else: true,
+              },
+            },
+          },
+        },
+      ]
     );
     if (todo) {
       res.status(200).json(apiResponse(200, "Todo marked successfully", todo));
