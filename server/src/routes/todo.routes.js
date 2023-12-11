@@ -6,6 +6,8 @@ import { check } from "express-validator";
 import markTodo from "../controllers/todo/markTodo.controller.js";
 import updateTodo from "../controllers/todo/updateTodo.controller.js";
 import deleteTodo from "../controllers/todo/deleteTodo.controller.js";
+import searchTodo from "../controllers/todo/searchTodo.controller.js";
+import { searchItemValidation } from "../middleware/searchValidation.middleware.js";
 
 const todoRouter = Router();
 
@@ -63,5 +65,8 @@ todoRouter.post(
   ],
   deleteTodo
 );
+
+// searching for todo
+todoRouter.post("/searchtodo", searchItemValidation, searchTodo);
 
 export default todoRouter;

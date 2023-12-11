@@ -34,23 +34,13 @@ const Navbar = () => {
               </NavLink>
             </div>
             <div className="hover:text-white text-xl font-semibold">
-              <NavLink to="/about">About Us</NavLink>
+              <NavLink to="/about">About Me</NavLink>
             </div>
           </div>
           <div className="hidden md:flex items-center space-x-10">
             <div className="">
               {user ? (
                 <div className="flex space-x-24">
-                  <div className="hidden md:flex items-center space-x-2 ">
-                    <input
-                      className="form-input p-2 rounded-md bg-transparent text-white"
-                      type="text"
-                      placeholder="Search Here..."
-                    />
-                    <button className="text-white   px-1 py-1 rounded-xl hover:bg-blue-600 text-md font-semibold">
-                      Search
-                    </button>
-                  </div>
                   <NavLink
                     className="text-xl font-semibold  px-2 py-1 rounded-xl mx-2 hover:text-white"
                     onClick={handleClick}
@@ -121,13 +111,6 @@ const Navbar = () => {
                 >
                   Logout
                 </NavLink>
-                <div className="flex items-center space-x-10 ">
-                  <input
-                    className="form-input p-2 rounded-md w-full mt-2 text-center"
-                    type="text"
-                    placeholder="Search..."
-                  />
-                </div>
               </div>
             ) : (
               <>

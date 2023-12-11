@@ -25,7 +25,7 @@ function LoginHome() {
   };
   const [input, setInput] = useState("");
   return (
-    <div className="bg-[#051923] w-full h-full">
+    <div className="bg-[#051923] w-full min-h-screen">
       <div className="flex justify-center gap-2 p-3 ">
         <input
           className="border-2 border-[#899878] rounded-lg px-2 py-1 w-[50%]"

@@ -5,7 +5,7 @@ import Home from "./pages/Home.page.jsx";
 // import About from "./pages/About.page.jsx";
 import Login from "./pages/Login.page.jsx";
 import Register from "./pages/Register.page.jsx";
-import About from "./pages/About.pgae.jsx";
+import About from "./pages/About.page.jsx";
 
 function App() {
   return (
