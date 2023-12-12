@@ -3,3 +3,4 @@
 *.log
 /dist
 /build
+package-lock.json

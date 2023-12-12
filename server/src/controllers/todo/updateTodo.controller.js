@@ -1,6 +1,6 @@
 import { validationResult } from "express-validator";
 import { apiError, apiResponse } from "../../utils/jsonGenerator.js";
-import { Todo } from "../../models/todo.model.js";
+import { Todo } from "../../models/Todo.model.js";
 
 async function updateTodo(req, res) {
   const result = validationResult(req);

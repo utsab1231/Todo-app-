@@ -1,6 +1,6 @@
 import { validationResult } from "express-validator";
 import { apiError, apiResponse } from "../../utils/jsonGenerator.js";
-import { Todo } from "../../models/todo.model.js";
+import { Todo } from "../../models/Todo.model.js";
 import { User } from "../../models/User.model.js";
 
 async function createTodo(req, res) {
